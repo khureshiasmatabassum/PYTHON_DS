@@ -1,0 +1,5 @@
+#print("hello world")
+str1=float(input("enter the no"))
+print(str1)
+print(type(str1))
+print(id(str1))	
