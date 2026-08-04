@@ -1,0 +1,25 @@
+import time 
+print("---WELCOME TO IHUB SERVICES---")
+fname=input("Enter the fname:")
+lname=input("Enter the lname:")
+username=input("Enter the username:")
+p1=input("Enter the password:")
+p2=input("Enter the confirm password:")
+email=input("Enter the email:")
+if((fname=="yash" or lname=="borse")or(username=="yash_123" and p1=="_12345" and p2=="_12345" and email=="yash@gmail.com")):
+    print()
+    print()
+    print("---New Employees Details----")
+    print("First_Name is:",fname)
+    print("Last_Name is:",lname)
+    print("User_Name is:",username)
+    print("Password is:",p1)
+    print("Confirm password is:",p2)
+    print("Employee email is:",email)
+    print('-----------------------------')
+else:
+    print('Dear new users please provide username,p1,p2,email ....')
+print()
+time.sleep(2)
+print('End of an application')
+
