@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CampusFix</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f4f7f6;
+    color:#18352a;
+}
+
+header{
+    background:#087f5b;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+nav{
+    background:white;
+    padding:12px;
+    text-align:center;
+}
+
+nav button{
+    border:0;
+    background:white;
+    color:#087f5b;
+    font-weight:bold;
+    padding:10px;
+    margin:3px;
+}
+
+.page{
+    display:none;
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+}
+
+.active{
+    display:block;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin:15px 0;
+    border-radius:12px;
+    box-shadow:0 2px 8px #ddd;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:12px;
+    margin:8px 0 15px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    box-sizing:border-box;
+}
+
+textarea{
+    height:80px;
+}
+
+.main{
+    background:#087f5b;
+    color:white;
+    border:0;
+    padding:13px 20px;
+    border-radius:7px;
+    font-weight:bold;
+}
+
+.stats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.stat{
+    flex:1;
+    min-width:130px;
+    background:#e9f7f0;
+    padding:15px;
+    text-align:center;
+    border-radius:10px;
+}
+
+.number{
+    font-size:26px;
+    color:#087f5b;
+    font-weight:bold;
+}
+
+.issue{
+    border:1px solid #ddd;
+    padding:15px;
+    margin:10px 0;
+    border-radius:10px;
+}
+
+img{
+    max-width:100%;
+    max-height:220px;
+    display:block;
+    margin-top:10px;
+    border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🏫 CampusFix</h1>
+<p>Report • Track • Resolve</p>
+</header>
+
+
+<nav>
+
+<button onclick="openPage('home')">
+🏠 Home
+</button>
+
+<button onclick="openPage('report')">
+📝 Report
+</button>
+
+<button onclick="openPage('management')">
+👨‍💼 Management
+</button>
+
+</nav>
+
+
+<!-- HOME -->
+
+<div id="home" class="page active">
+
+<div class="card">
+
+<h2>Welcome to CampusFix</h2>
+
+<p>
+Report problems around the campus and help
+management identify and resolve them faster.
+</p>
+
+<button class="main"
+onclick="openPage('report')">
+
+📝 Report a Problem
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- REPORT -->
+
+<div id="report" class="page">
+
+<div class="card">
+
+<h2>📝 Report Campus Issue</h2>
+
+<label>Student Name</label>
+
+<input id="name"
+placeholder="Your name">
+
+
+<label>Student ID</label>
+
+<input id="studentId"
+placeholder="Example: STU001">
+
+
+<label>Issue</label>
+
+<input id="issue"
+placeholder="Example: Broken classroom light">
+
+
+<label>Category</label>
+
+<select id="category">
+
+<option>Electrical</option>
+<option>Water & Plumbing</option>
+<option>Furniture</option>
+<option>Cleanliness</option>
+<option>Internet</option>
+<option>Safety</option>
+<option>Other</option>
+
+</select>
+
+
+<label>Location</label>
+
+<input id="location"
+placeholder="Example: Block A Room 204">
+
+
+<label>Priority</label>
+
+<select id="priority">
+
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+
+</select>
+
+
+<label>Description</label>
+
+<textarea id="description"
+placeholder="Describe the problem"></textarea>
+
+
+<label>Photo (optional)</label>
+
+<input
+type="file"
+accept="image/*"
+onchange="loadPhoto(this)"
+>
+
+<img id="photo"
+style="display:none">
+
+
+<br>
+
+<button class="main"
+onclick="submitReport()">
+
+🚀 Submit Report
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- MANAGEMENT -->
+
+<div id="management" class="page">
+
+<div class="card">
+
+<h2>👨‍💼 Management Dashboard</h2>
+
+<div class="stats">
+
+<div class="stat">
+👥 Students
+<div class="number" id="students">
+0
+</div>
+</div>
+
+<div class="stat">
+📝 Reports
+<div class="number" id="reports">
+0
+</div>
+</div>
+
+<div class="stat">
+🔴 Pending
+<div class="number" id="pending">
+0
+</div>
+</div>
+
+<div class="stat">
+🔵 Progress
+<div class="number" id="progress">
+0
+</div>
+</div>
+
+<div class="stat">
+🟢 Resolved
+<div class="number" id="resolved">
+0
+</div>
+</div>
+
+<div class="stat">
+⚡ High Priority
+<div class="number" id="high">
+0
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 Reported Issues</h2>
+
+<div id="list"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let data=[];
+
+
+/* PAGE */
+
+function openPage(page){
+
+document.querySelectorAll(".page")
+.forEach(function(p){
+
+p.classList.remove("active");
+
+});
+
+document.getElementById(page)
+.classList.add("active");
+
+if(page=="management"){
+
+showManagement();
+
+}
+
+}
+
+
+/* PHOTO */
+
+let selectedPhoto="";
+
+function loadPhoto(input){
+
+if(!input.files[0]) return;
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+selectedPhoto=e.target.result;
+
+let img=document.getElementById("photo");
+
+img.src=selectedPhoto;
+
+img.style.display="block";
+
+};
+
+reader.readAsDataURL(input.files[0]);
+
+}
+
+
+/* SUBMIT */
+
+function submitReport(){
+
+let name=
+document.getElementById("name").value;
+
+let studentId=
+document.getElementById("studentId").value;
+
+let issue=
+document.getElementById("issue").value;
+
+let location=
+document.getElementById("location").value;
+
+let description=
+document.getElementById("description").value;
+
+
+if(
+name=="" ||
+studentId=="" ||
+issue=="" ||
+location=="" ||
+description==""
+){
+
+alert("Please fill all required details.");
+
+return;
+
+}
+
+
+let report={
+
+id:"CF"+Date.now(),
+
+name:name,
+
+studentId:studentId,
+
+issue:issue,
+
+category:
+document.getElementById("category").value,
+
+location:location,
+
+priority:
+document.getElementById("priority").value,
+
+description:description,
+
+photo:selectedPhoto,
+
+status:"Reported"
+
+};
+
+
+data.push(report);
+
+
+alert(
+"✅ Report submitted successfully!\n\nReport ID: "+
+report.id
+);
+
+
+/* CLEAR */
+
+document.getElementById("name").value="";
+
+document.getElementById("studentId").value="";
+
+document.getElementById("issue").value="";
+
+document.getElementById("location").value="";
+
+document.getElementById("description").value="";
+
+document.getElementById("photo").style.display="none";
+
+selectedPhoto="";
+
+
+}
+
+
+/* MANAGEMENT */
+
+function showManagement(){
+
+let students=new Set();
+
+let pending=0;
+
+let progress=0;
+
+let resolved=0;
+
+let high=0;
+
+
+data.forEach(function(r){
+
+students.add(r.studentId);
+
+if(r.status=="Reported")
+pending++;
+
+if(r.status=="In Progress")
+progress++;
+
+if(r.status=="Resolved")
+resolved++;
+
+if(r.priority=="High")
+high++;
+
+});
+
+
+document.getElementById("students")
+.innerText=students.size;
+
+document.getElementById("reports")
+.innerText=data.length;
+
+document.getElementById("pending")
+.innerText=pending;
+
+document.getElementById("progress")
+.innerText=progress;
+
+document.getElementById("resolved")
+.innerText=resolved;
+
+document.getElementById("high")
+.innerText=high;
+
+
+let list=document.getElementById("list");
+
+list.innerHTML="";
+
+
+if(data.length==0){
+
+list.innerHTML=
+"<p>No reports yet.</p>";
+
+return;
+
+}
+
+
+data.forEach(function(r){
+
+let box=document.createElement("div");
+
+box.className="issue";
+
+box.innerHTML=
+
+"<h3>"+r.issue+"</h3>"+
+
+"<p>👤 Student: "+r.name+"</p>"+
+
+"<p>🎓 ID: "+r.studentId+"</p>"+
+
+"<p>🏷️ Category: "+r.category+"</p>"+
+
+"<p>📍 Location: "+r.location+"</p>"+
+
+"<p>⚡ Priority: "+r.priority+"</p>"+
+
+"<p>📝 "+r.description+"</p>"+
+
+"<p>🆔 Report ID: "+r.id+"</p>"+
+
+"<select onchange='changeStatus("+JSON.stringify(r.id)+",this.value)'>"+
+
+"<option "+
+(r.status=="Reported"?"selected":"")+
+">Reported</option>"+
+
+"<option "+
+(r.status=="In Progress"?"selected":"")+
+">In Progress</option>"+
+
+"<option "+
+(r.status=="Resolved"?"selected":"")+
+">Resolved</option>"+
+
+"</select>";
+
+
+if(r.photo){
+
+let img=document.createElement("img");
+
+img.src=r.photo;
+
+box.appendChild(img);
+
+}
+
+
+list.appendChild(box);
+
+});
+
+}
+
+
+/* STATUS */
+
+function changeStatus(id,status){
+
+data.forEach(function(r){
+
+if(r.id==id){
+
+r.status=status;
+
+}
+
+});
+
+showManagement();
+
+}
+
+</script>
+
+</body>
+</html>
