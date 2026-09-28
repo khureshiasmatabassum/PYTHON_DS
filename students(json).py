@@ -1,0 +1,14 @@
+[
+    {
+        "Name":"Rahul",
+        "Marks":85
+    },
+    {
+        "Name":"Aman",
+        "Marks":72
+    },
+    {
+        "Name":"Priya",
+        "Marks":91
+    }
+]

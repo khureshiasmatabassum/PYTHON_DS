@@ -1,0 +1,13 @@
+import numpy as np
+zeros=np.zeros(5)
+ones=np.ones(5)
+numbers=np.arange(1,11)
+values=np.linspace(0,10,6)
+print("zeros:")
+print(zeros)
+print("\nones:")
+print(ones)
+print("\nnumbers from 1 to 10:")
+print(numbers)
+print("\nsix equally spaced values from 0 to 10:")
+print(values)
